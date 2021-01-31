@@ -12,6 +12,7 @@ from source.main.model.body import Body
 from source.main.model.canvas import BaseCanvas
 from source.main.model.projection import Projection
 from source.main.service.service import draw
+from source.main.service.service import mirror
 from source.main.service.service import rotate
 from source.main.service.service import scale
 from source.main.service.service import shift
@@ -69,9 +70,9 @@ def main():
 
     # Отражение
     canvas.add_label(root, "Отражение", 705, 280)
-    canvas.add_button("Относительно X", "", 705, 300)
-    canvas.add_button("Относительно Y", "", 705, 330)
-    canvas.add_button("Относительно Z", "", 705, 360)
+    canvas.add_button("Относительно X", lambda: [mirror(body, Axis.x), draw(kind, body, canvas)], 705, 300)
+    canvas.add_button("Относительно Y", lambda: [mirror(body, Axis.y), draw(kind, body, canvas)], 705, 330)
+    canvas.add_button("Относительно Z", lambda: [mirror(body, Axis.z), draw(kind, body, canvas)], 705, 360)
 
     # Проецирование
     canvas.add_radio_buttons("Косоугольное", kind, Projection.oblique.value, 705, 400)

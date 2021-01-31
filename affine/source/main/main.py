@@ -28,7 +28,9 @@ def main():
 
     # Генерация полотна
     canvas = BaseCanvas(root)
-    kind = Projection.oblique
+    kind = IntVar()
+    kind.set(Projection.oblique.value)
+    draw(kind, body, canvas)
 
     # Перемещение
     canvas.add_label(root, "Перемещение", 705, 5)
@@ -72,9 +74,9 @@ def main():
     canvas.add_button("Относительно Z", "", 705, 360)
 
     # Проецирование
-    canvas.add_radio_buttons("Косоугольное", "", "", 705, 400)
-    canvas.add_radio_buttons("Перспективное", "", "", 705, 430)
-    canvas.add_button("Проецирование ", "", 705, 470)
+    canvas.add_radio_buttons("Косоугольное", kind, Projection.oblique.value, 705, 400)
+    canvas.add_radio_buttons("Перспективное", kind, Projection.perspective.value, 705, 430)
+    canvas.add_button("Проецирование", lambda: draw(kind, body, canvas), 705, 470)
 
     root.mainloop()
 

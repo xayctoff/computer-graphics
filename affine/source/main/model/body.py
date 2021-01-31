@@ -7,16 +7,30 @@ from source.main.util.reader import read_from_file
 # Объект, подлежащий изменению через аффинные преобразования
 class Body:
     def __init__(self):
-        #   Считывание из файла списка координат точек объекта и списка рёбер, соединяющих данные точки
+        # Считывание из файла списка координат точек объекта и списка рёбер, соединяющих данные точки
         self._nodes = read_from_file(os.path.relpath("../source/resources/nodes.txt", os.path.dirname(__file__)))
         self._edges = read_from_file(os.path.relpath("../source/resources/edges.txt", os.path.dirname(__file__)))
 
-        #   Координаты объекта
+        # Координаты объекта
         self._coordinates = number.array([0, 0, 0, 1])
-        #   Значения углов осей объекта
+        # Значения углов осей объекта
         self._angles = number.array([0, 0, 0, 0])
-        #   Размер объекта
+        # Размер объекта
         self._size = number.array([1.0, 1.0, 1.0, 1.0])
+
+        # Переопределение центра объекта
+        self.centring()
+
+    # Переопределение центра объекта с левого нижнего к его фактическому центру
+    # @param self непосредственно объект
+    def centring(self):
+        nodes = self._nodes.tolist()
+
+        # Рассчитаем центр объекта
+        axle = lambda axis: (min([node[axis] for node in nodes]) + max([node[axis] for node in nodes])) / 2
+        center = [axle(0), axle(1), axle(2), 0]
+
+        self._nodes = self._nodes - center
 
     def get_nodes(self):
         return self._nodes

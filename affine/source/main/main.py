@@ -5,7 +5,7 @@ from source.main.constants import PANEL_WIDTH
 from source.main.constants import TITLE
 from source.main.constants import WIDTH
 from source.main.model.body import Body
-from source.main.model.canvas import Canvas
+from source.main.model.canvas import BaseCanvas
 
 
 def main():
@@ -16,10 +16,9 @@ def main():
     root.geometry(str(WIDTH + PANEL_WIDTH) + "x" + str(HEIGHT))
     root.title(TITLE)
     root.resizable(width=False, height=False)
-    root.mainloop()
 
     # Генерация полотна
-    canvas = Canvas(root)
+    canvas = BaseCanvas(root)
 
     # Перемещение
     canvas.add_label(root, "Перемещение", 705, 5)
@@ -33,11 +32,11 @@ def main():
     canvas.add_label(root, "Y", 770, 60)
 
     canvas.add_button("+", "", 705, 85)
-    canvas.add_button("+", "", 730, 85)
+    canvas.add_button("-", "", 730, 85)
     canvas.add_label(root, "Z", 770, 90)
 
     # Поворот
-    canvas.add_label(root, "Поворот", 700, 115)
+    canvas.add_label(root, "Поворот", 705, 115)
 
     canvas.add_button("+", "", 705, 135)
     canvas.add_button("-", "", 730, 135)
@@ -63,9 +62,11 @@ def main():
     canvas.add_button("Относительно Z", "", 705, 360)
 
     # Проецирование
-    canvas.add_radio_buttons("Косоугольное", "", "", 705, 390)
-    canvas.add_radio_buttons("Перспективное", "", "", 705, 420)
-    canvas.add_button("Проецирование ", "", 705, 460)
+    canvas.add_radio_buttons("Косоугольное", "", "", 705, 400)
+    canvas.add_radio_buttons("Перспективное", "", "", 705, 430)
+    canvas.add_button("Проецирование ", "", 705, 470)
+
+    root.mainloop()
 
 
 if __name__ == "__main__":

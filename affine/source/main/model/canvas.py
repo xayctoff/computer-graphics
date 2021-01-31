@@ -1,4 +1,4 @@
-import tkinter as tk
+from tkinter import *
 
 from source.main.constants import HEIGHT
 from source.main.constants import WHEAT
@@ -15,27 +15,27 @@ class MetaCanvas(type):
         return self._instances[self]
 
 
-class Canvas(metaclass=MetaCanvas):
+class BaseCanvas(metaclass=MetaCanvas):
 
     def __init__(self, root):
-        canvas = tk.Canvas(root, width=WIDTH, height=HEIGHT, bg=WHEAT, bd=0, highlightthickness=0)
+        canvas = Canvas(root, width=WIDTH, height=HEIGHT, bg=WHEAT, bd=0, highlightthickness=0)
         canvas.place(x=0, y=0)
 
         self._labels = []
         self._buttons = []
         self._radio_buttons = []
 
-    def add_label(self, root, text, x, y):
-        label = Label(root, text)
-        label.place(x, y)
+    def add_label(self, root, text, abscissa, ordinate):
+        label = Label(root, text=text)
+        label.place(x=abscissa, y=ordinate)
         self._labels.append(label)
 
-    def add_button(self, text, command, x, y):
-        button = Button(text, command)
-        button.place(x, y)
+    def add_button(self, text, command, abscissa, ordinate):
+        button = Button(text=text, command=command)
+        button.place(x=abscissa, y=ordinate)
         self._buttons.append(button)
 
-    def add_radio_buttons(self, text, variable, value, x, y):
-        radio_button = RadioButton(text, variable, value)
-        radio_button.place(x, y)
+    def add_radio_buttons(self, text, variable, value, abscissa, ordinate):
+        radio_button = Radiobutton(text=text, variable=variable, value=value)
+        radio_button.place(x=abscissa, y=ordinate)
         self._radio_buttons.append(radio_button)

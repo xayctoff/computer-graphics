@@ -4,6 +4,7 @@ import os
 from source.main.util.reader import read_from_file
 
 
+# Объект, подлежащий изменению через аффинные преобразования
 class Body:
     def __init__(self):
         #   Считывание из файла списка координат точек объекта и списка рёбер, соединяющих данные точки

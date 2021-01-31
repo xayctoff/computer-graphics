@@ -18,8 +18,8 @@ class MetaCanvas(type):
 class BaseCanvas(metaclass=MetaCanvas):
 
     def __init__(self, root):
-        canvas = Canvas(root, width=WIDTH, height=HEIGHT, bg=WHEAT, bd=0, highlightthickness=0)
-        canvas.place(x=0, y=0)
+        self._canvas = Canvas(root, width=WIDTH, height=HEIGHT, bg=WHEAT, bd=0, highlightthickness=0)
+        self._canvas.place(x=0, y=0)
 
         self._labels = []
         self._buttons = []
@@ -39,3 +39,6 @@ class BaseCanvas(metaclass=MetaCanvas):
         radio_button = Radiobutton(text=text, variable=variable, value=value)
         radio_button.place(x=abscissa, y=ordinate)
         self._radio_buttons.append(radio_button)
+
+    def get_canvas(self):
+        return self._canvas

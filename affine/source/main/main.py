@@ -1,11 +1,14 @@
 from tkinter import *
 
 from source.main.constants import HEIGHT
+from source.main.constants import MOVE
 from source.main.constants import PANEL_WIDTH
 from source.main.constants import TITLE
 from source.main.constants import WIDTH
 from source.main.model.body import Body
 from source.main.model.canvas import BaseCanvas
+from source.main.service.service import draw
+from source.main.service.service import shift
 
 
 def main():
@@ -23,16 +26,16 @@ def main():
     # Перемещение
     canvas.add_label(root, "Перемещение", 705, 5)
 
-    canvas.add_button("+", "", 705, 25)
-    canvas.add_button("-", "", 730, 25)
+    canvas.add_button("+", lambda: [shift(body, [MOVE, 0, 0, 0]), draw("", body, canvas)], 705, 25)
+    canvas.add_button("-", lambda: [shift(body, [-MOVE, 0, 0, 0]), draw("", body, canvas)], 730, 25)
     canvas.add_label(root, "X", 770, 30)
 
-    canvas.add_button("+", "", 705, 55)
-    canvas.add_button("-", "", 730, 55)
+    canvas.add_button("+", lambda: [shift(body, [0, MOVE, 0, 0]), draw("", body, canvas)], 705, 55)
+    canvas.add_button("-", lambda: [shift(body, [0, -MOVE, 0, 0]), draw("", body, canvas)], 730, 55)
     canvas.add_label(root, "Y", 770, 60)
 
-    canvas.add_button("+", "", 705, 85)
-    canvas.add_button("-", "", 730, 85)
+    canvas.add_button("+", lambda: [shift(body, [0, 0, MOVE, 0]), draw("", body, canvas)], 705, 85)
+    canvas.add_button("-", lambda: [shift(body, [0, 0, -MOVE, 0]), draw("", body, canvas)], 730, 85)
     canvas.add_label(root, "Z", 770, 90)
 
     # Поворот

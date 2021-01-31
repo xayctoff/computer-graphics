@@ -3,6 +3,7 @@ from tkinter import *
 from source.main.constants import HEIGHT
 from source.main.constants import MOVE
 from source.main.constants import PANEL_WIDTH
+from source.main.constants import SCALE
 from source.main.constants import TITLE
 from source.main.constants import TURN
 from source.main.constants import WIDTH
@@ -12,6 +13,7 @@ from source.main.model.canvas import BaseCanvas
 from source.main.model.projection import Projection
 from source.main.service.service import draw
 from source.main.service.service import rotate
+from source.main.service.service import scale
 from source.main.service.service import shift
 
 
@@ -60,8 +62,8 @@ def main():
 
     # Масштабирование
     canvas.add_label(root, "Масштабирование", 705, 225)
-    canvas.add_button("+", "", 705, 245)
-    canvas.add_button("-", "", 730, 245)
+    canvas.add_button("+", lambda: [scale(body, [SCALE, SCALE, SCALE, 0]), draw(kind, body, canvas)], 705, 245)
+    canvas.add_button("-", lambda: [scale(body, [-SCALE, -SCALE, -SCALE, 0]), draw(kind, body, canvas)], 730, 245)
 
     # Отражение
     canvas.add_label(root, "Отражение", 705, 280)

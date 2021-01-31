@@ -1,11 +1,15 @@
+import math
 import numpy as number
 
 from source.main.constants import BLACK
 from source.main.constants import BLUE
+from source.main.constants import C
 from source.main.constants import GREEN
 from source.main.constants import HEIGHT
+from source.main.constants import K
 from source.main.constants import RED
 from source.main.constants import WIDTH
+from source.main.model.projection import Projection
 
 
 # Обновление полотна
@@ -14,10 +18,10 @@ from source.main.constants import WIDTH
 # @param canvas непосредственно полотно с объектом
 # @return обновлённые координаты объекта
 def draw(kind, body, canvas):
+    nodes = projection(kind, body.get_nodes())
+
     # Очищаем полотно перед отображением изменённого объекта
     canvas.get_canvas().delete("all")
-
-    nodes = body.get_nodes()
 
     # Прорисовываем объект
     for edge in body.get_edges():
@@ -41,6 +45,9 @@ def draw(kind, body, canvas):
         [0, 2, BLUE],
         [0, 3, GREEN]
     ]
+
+    # Подвергаем оси проецированию
+    axis = projection(kind, axis)
 
     # Прорисовываем оси координат
     for edge in indicator:
@@ -78,6 +85,46 @@ def update(body, matrix):
         result.append(number.matmul(node, matrix))
 
     body.set_nodes(result)
+
+
+# Проецирование объекта
+# @param kind тип проецирования
+# @param nodes координаты точек объекта
+def projection(kind, nodes):
+    # При косоугольном проецировании используется пучок прямых неперпендикулярных плоскости экрана
+    # При проецировании на ось Z в третьей строке матрице имеем: (-cos 45° sin 45° 0 1)
+    if kind is Projection.oblique:
+        matrix = number.array([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [-math.cos(K), math.sin(K), 0, 0],
+            [0, 0, 0, 1]])
+
+    # При перспективном проецировании пучок прямых проходят через центр проекции
+    # В нашем случае это точка C, расположенная в третьей строке матрицы, так как проецируем на ось Z
+    else:
+        matrix = number.array([
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, C],
+            [0, 0, 0, 1]
+        ])
+
+    # Обновим объект в зависимости от выбранного типа проецирования
+    result = []
+
+    for node in nodes:
+        new = number.matmul(node, matrix)
+        # Когда осуществляется переход в перспективное проецирование, то изменяется ось h
+        # При произведении матрицы проецирования и текущих координат объекта
+        # То есть, получаем координату вида (x y 0 1 - z/C)
+        # Приведём координаты к виду (x / (1 - z/c) y / (1 - z/c) 0 1)
+        # Важно, что при переходе к косоугольному проецированию координаты возвращают вид (x y z 1)
+        new = new / (new[3])
+        result.append(new)
+
+    # Возвращаем координаты объекта, исходя из текущего аффинного преобразования, в данном случае проецирования
+    return number.array(result)
 
 
 # Перенос объекта

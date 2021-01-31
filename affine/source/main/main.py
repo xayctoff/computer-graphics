@@ -4,11 +4,14 @@ from source.main.constants import HEIGHT
 from source.main.constants import MOVE
 from source.main.constants import PANEL_WIDTH
 from source.main.constants import TITLE
+from source.main.constants import TURN
 from source.main.constants import WIDTH
+from source.main.model.axis import Axis
 from source.main.model.body import Body
 from source.main.model.canvas import BaseCanvas
 from source.main.model.projection import Projection
 from source.main.service.service import draw
+from source.main.service.service import rotate
 from source.main.service.service import shift
 
 
@@ -43,16 +46,16 @@ def main():
     # Поворот
     canvas.add_label(root, "Поворот", 705, 115)
 
-    canvas.add_button("+", "", 705, 135)
-    canvas.add_button("-", "", 730, 135)
+    canvas.add_button("+", lambda: [rotate(body, [TURN, 0., 0., 0.], Axis.x), draw(kind, body, canvas)], 705, 135)
+    canvas.add_button("-", lambda: [rotate(body, [-TURN, 0., 0., 0.], Axis.x), draw(kind, body, canvas)], 730, 135)
     canvas.add_label(root, "X", 770, 140)
 
-    canvas.add_button("+", "", 705, 165)
-    canvas.add_button("-", "", 730, 165)
+    canvas.add_button("+", lambda: [rotate(body, [0., TURN, 0., 0.], Axis.y), draw(kind, body, canvas)], 705, 165)
+    canvas.add_button("-", lambda: [rotate(body, [0., -TURN, 0., 0.], Axis.y), draw(kind, body, canvas)], 730, 165)
     canvas.add_label(root, "Y", 770, 170)
 
-    canvas.add_button("+", "", 705, 195)
-    canvas.add_button("-", "", 730, 195)
+    canvas.add_button("+", lambda: [rotate(body, [0., 0., TURN, 0.], Axis.z), draw(kind, body, canvas)], 705, 195)
+    canvas.add_button("-", lambda: [rotate(body, [0., 0., -TURN, 0.], Axis.z), draw(kind, body, canvas)], 730, 195)
     canvas.add_label(root, "Z", 770, 200)
 
     # Масштабирование

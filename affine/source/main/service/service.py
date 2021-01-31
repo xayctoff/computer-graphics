@@ -9,6 +9,7 @@ from source.main.constants import HEIGHT
 from source.main.constants import K
 from source.main.constants import RED
 from source.main.constants import WIDTH
+from source.main.model.axis import Axis
 from source.main.model.projection import Projection
 
 
@@ -145,4 +146,52 @@ def shift(body, vector):
 
     # Обновляем координаты объекта, исходя из текущего аффинного преобразования
     # В данном случае — перемещение объекта
+    update(body, matrix)
+
+
+# Вращение объекта
+# @param body непосредственно объект
+# @param vector вектор поворота объекта
+# @param axis выбранная ось
+def rotate(body, vector, axis):
+    # Прибавляем вектор поворота к текущим значениям углов осей объекта
+    body.set_angles((body.get_angles() + vector) % 360)
+
+    # Переводим значения углов осей в радианы
+    angles = [element * (math.pi / 180) for element in vector]
+
+    # Матрица вращения вокруг оси абсцисс на значение угла angles[0]
+    x = number.array([
+        [1, 0, 0, 0],
+        [0, math.cos(angles[0]), math.sin(angles[0]), 0],
+        [0, -math.sin(angles[0]), math.cos(angles[0]), 0],
+        [0, 0, 0, 1]
+    ])
+
+    # Матрица вращения вокруг оси ординат на значение угла angles[1]
+    y = number.array([
+        [math.cos(angles[1]), 0, -math.sin(angles[1]), 0],
+        [0, 1, 0, 0],
+        [math.sin(angles[1]), 0, math.cos(angles[1]), 0],
+        [0, 0, 0, 1]
+    ])
+
+    # Матрица вращения вокруг оси аппликат на значение угла angles[2]
+    z = number.array([
+        [math.cos(angles[2]), math.sin(angles[2]), 0, 0],
+        [-math.sin(angles[2]), math.cos(angles[2]), 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ])
+
+    # Выбор одной из матриц вращения в зависимости от выбранной оси
+    if axis is Axis.x:
+        matrix = x
+    elif axis is Axis.y:
+        matrix = y
+    else:
+        matrix = z
+
+    # Обновляем координаты объекта, исходя из текущего аффинного преобразования
+    # В данном случае — вращение объекта
     update(body, matrix)

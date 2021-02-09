@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Многоугольник
  */
@@ -52,4 +54,14 @@ public class Polygon {
      * Правое активное ребро
      */
     private Edge right;
+
+    /**
+     * Список рёбер
+     */
+    private List<Edge> edges;
+
+    /**
+     * Список точек
+     */
+    private List<Point> points;
 }
